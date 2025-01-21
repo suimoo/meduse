@@ -21,16 +21,13 @@ async def on_ready():
     print(f"{bot.user} 起床囉")
     print(f"已載入 {len(slash)} 個斜線指令")
     now=int(datetime.datetime.now().strftime("%H"))
-    if now+8 > 24:
-      now-=24
-    now+=8
     greeting=""
     if 6 < now < 18:
       greeting="Bonjour,"
     else:
       greeting="Bonsoir,"
     embed = discord.Embed(title = (f"{greeting} Méduse上線了喔喔喔喔喔喔"))
-    await channel1.send("早安")
+    await channel1.send("早安，跑來自D+電腦")
     await channel2.send(embed = embed)
 
     #清空籤筒(詳見Draw.py)
@@ -39,7 +36,7 @@ async def on_ready():
         for i in range(15):
             jdata["draw_options"][i]="-1"
     with open('setting.json', 'w', encoding='utf8') as jfile:
-        json.dump(jdata,jfile,indent=4)
+        json.dump(jdata,jfile,indent=4, ensure_ascii=False)
 
 @bot.command()
 async def hi(ctx):

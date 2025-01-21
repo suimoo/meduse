@@ -15,7 +15,7 @@ class Vote(commands.Cog):
         self.polls = {}
 
     class ModalClass(discord.ui.Modal, title = "投票選項"):
-        def __init__(self, title, count, mins):
+        def __init__(self, title, count):
             super().__init__(title=title)
             for i in range(count):
                 self.add_item(discord.ui.TextInput(label=f"選項{i+1}"))
@@ -95,18 +95,20 @@ class Vote(commands.Cog):
 
 
     @app_commands.command(name = "vote", description="創建一個投票")
-    @app_commands.describe(title="投票標題", count="選項數量(最多5)", mins="幾分鐘後結束")
+    @app_commands.describe(title="投票標題", count="選項數量(最多5)", time="什麼時候結束(例.18:30)")
     #async def vote(self, interaction: discord.Interaction, count: int, option: Optional[str]=None):
-    async def vote(self, interaction: discord.Interaction, title: str, count: int, mins: int):
+    async def vote(self, interaction: discord.Interaction, title: str, count: int, time: Optional[str]=None):
         if count>5:
             await interaction.response.send_message("太多了啦")
             return
         elif count<2:
             await interaction.response.send_message("辦投票幹嘛")
             return
-        modal = self.ModalClass(title, count, mins)
+        modal = self.ModalClass(title, count, time)
         #now=datetime.datetime.now().strftime("%H%M")
         await interaction.response.send_modal(modal)
+        if time!=None:
+          await interaction.followup.send(f"即將開始投票，預計結束時間`{time}`")
 
 
 async def setup(bot):

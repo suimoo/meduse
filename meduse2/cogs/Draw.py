@@ -16,7 +16,7 @@ def clear():
         for i in range(15):
             jdata["draw_options"][i]="-1"
     with open('setting.json', 'w', encoding='utf8') as jfile:
-        json.dump(jdata,jfile,indent=4)
+        json.dump(jdata,jfile,indent=4, ensure_ascii=False)
 
 
 class Draw(commands.Cog):
@@ -33,14 +33,14 @@ class Draw(commands.Cog):
             with open('setting.json', 'r', encoding='utf8') as jfile:
                 jdata["draw_options"][jdata["draw_option_num"]]=option
             with open('setting.json', 'w', encoding='utf8') as jfile:
-                json.dump(jdata,jfile,indent=4)
+                json.dump(jdata,jfile,indent=4, ensure_ascii=False)
 
             await interaction.response.send_message(f"已成功加入選項:{option}")
             
             with open('setting.json', 'r', encoding='utf8') as jfile:
                 jdata["draw_option_num"]+=1
             with open('setting.json', 'w', encoding='utf8') as jfile:
-                json.dump(jdata,jfile,indent=4)
+                json.dump(jdata,jfile,indent=4, ensure_ascii=False)
 
 
     @app_commands.command(name="draw_reset", description="清空籤筒")

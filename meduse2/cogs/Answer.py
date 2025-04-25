@@ -16,6 +16,8 @@ class Answer(commands.Cog):
     @app_commands.describe(question="有什麼貓餅")
     async def answer(self, interaction: discord.Interaction, question: str):
       await interaction.response.defer()
+      
+      #叫爬蟲
       async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
@@ -28,12 +30,14 @@ class Answer(commands.Cog):
         except Exception as e:
           print("Cannot press the button")
         
+        #等待回應然後取得網頁內容
         await page.wait_for_timeout(3000)
         response = await page.content()
         soup = BeautifulSoup(response, 'html.parser')
         answer = soup.select_one('h2.text-5xl')
         print(answer.text)
         
+        #輸出
         embed=discord.Embed(title="解答之書σ ﾟ∀ ﾟ) ﾟ∀)σ", description=question, color=0xe570e7)
         embed.set_thumbnail(url=str(jdata["h"]))
         embed.add_field(name=f"解答:{answer.text}", value='', inline=False)
